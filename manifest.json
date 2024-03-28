@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Image Keeper",
+  "version": "1.0",
+  "description": "Keep and Save images from the web for later use, either to paste them onto websites or to download them",
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "storage",
+    "scripting",
+    "downloads"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "gallery.png"
+    }
+  },
+  "icons": {
+    "128": "gallery.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.html", "popup.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
