@@ -42,15 +42,24 @@ document.addEventListener("DOMContentLoaded", function () {
         .querySelector(".download")
         .addEventListener("click", function () {
           console.log("Download button clicked");
-          let a = document.createElement("a");
-          a.href = imageUrl;
-          a.download = "download.jpg";
-          document.body.appendChild(a);
-          a.click();
+          chrome.downloads.download(
+            {
+              url: imageUrl,
+              filename: "download.jpg",
+              saveAs: true,
+            },
+            function (downloadId) {
+              if (downloadId) {
+                console.log("Download initiated with ID:", downloadId);
+              } else {
+                console.error("Failed to initiate download");
+              }
+            }
+          );
         });
       container.querySelector(".trash").addEventListener("click", function () {
         console.log("Trash button clicked");
-       
+
         chrome.storage.local.get("images", function (result) {
           if (chrome.runtime.lastError) {
             console.error(
@@ -59,10 +68,9 @@ document.addEventListener("DOMContentLoaded", function () {
             );
           } else {
             let images = result.images;
-             
+
             let index = images.indexOf(imageUrl);
             if (index !== -1) {
-             
               images.splice(index, 1);
               chrome.storage.local.set({ images: images }, function () {
                 if (chrome.runtime.lastError) {
